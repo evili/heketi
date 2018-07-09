@@ -112,6 +112,12 @@ func NewSshExecutor(config *SshConfig) (*SshExecutor, error) {
 		s.Fstab = config.Fstab
 	}
 
+	if config.MountOpts == "" {
+	        s.MountOpts = "rw,inode64,noatime,nouuid"
+	} else {
+	        s.MountOpts = config.MountOpts
+	}
+
 	s.BackupLVM = config.BackupLVM
 
 	// Save the configuration

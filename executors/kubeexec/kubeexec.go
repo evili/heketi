@@ -116,6 +116,12 @@ func NewKubeExecutor(config *KubeConfig) (*KubeExecutor, error) {
 		k.Fstab = config.Fstab
 	}
 
+        if k.config.MountOpts == "" {
+	        k.MountOpts = "rw,inode64,noatime,nouuid"
+	} else {
+	        k.MountOpts = config.MountOpts
+	}
+
 	k.BackupLVM = config.BackupLVM
 
 	// Get namespace

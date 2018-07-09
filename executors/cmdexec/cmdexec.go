@@ -31,6 +31,7 @@ type CmdExecutor struct {
 
 	RemoteExecutor RemoteCommandTransport
 	Fstab          string
+	MountOpts      string
 	BackupLVM      bool
 }
 

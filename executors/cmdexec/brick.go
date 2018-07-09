@@ -30,6 +30,7 @@ func (s *CmdExecutor) BrickCreate(host string,
 	godbc.Require(brick.VgId != "")
 	godbc.Require(brick.Path != "")
 	godbc.Require(s.Fstab != "")
+	godbc.Require(s.MountOpts != "")
 
 	// make local vars with more accurate names to cut down on name confusion
 	// and make future refactoring easier
@@ -70,13 +71,14 @@ func (s *CmdExecutor) BrickCreate(host string,
 		fmt.Sprintf("mkfs.xfs -i size=512 -n size=8192 %v", devnode),
 
 		// Fstab
-		fmt.Sprintf("awk \"BEGIN {print \\\"%v %v xfs rw,inode64,noatime,nouuid 1 2\\\" >> \\\"%v\\\"}\"",
+		fmt.Sprintf("awk \"BEGIN {print \\\"%v %v xfs %v 1 2\\\" >> \\\"%v\\\"}\"",
 			devnode,
 			mountPath,
+			s.MountOpts,
 			s.Fstab),
 
 		// Mount
-		fmt.Sprintf("mount -o rw,inode64,noatime,nouuid %v %v", devnode, mountPath),
+		fmt.Sprintf("mount -o %v %v %v", s.MountOpts, devnode, mountPath),
 
 		// Create a directory inside the formated volume for GlusterFS
 		fmt.Sprintf("mkdir %v", brickPath),
